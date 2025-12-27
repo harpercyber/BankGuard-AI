@@ -10,10 +10,13 @@ events = []
 
 #Basically a contract that says any event sent to this server must look like the following
 class Event(BaseModel):
-    user: str
+    user_id: str
+    name: str
+    IP_address: str
     timestamp: str
-    event_type: str
-    amount: Optional[float] = None
+    location: str
+    login_success: bool
+    transaction_amount: Optional[float] = None
 
 #Confirms server is alive
 @app.get("/")
@@ -27,11 +30,12 @@ def running():
 def receive_event(event: Event):
     
     #event is a python object and dict converts it to JSON-style data
-    events.appent(event.dict())
+    events.append(event.dict())
 
     #Confirms ingestion succeeded; will enhance later
     return {"status": "received", "event": event}
 
 
+print(f"Total events received: {len(events)}")
 
 
